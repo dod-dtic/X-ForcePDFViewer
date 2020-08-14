@@ -2,6 +2,9 @@ import { Component, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; // used for pdf viewing
 import { IndexeddbComponent } from './indexeddb/indexeddb.component';
 import{ GlobalConstants } from './global-constants';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
+import { MyDialogComponent } from './my-dialog/my-dialog.component';
+import { EventManager } from '@angular/platform-browser';
 
 declare var jQuery: any; 
 @Component({
@@ -14,39 +17,33 @@ export class AppComponent { //App Component is the PDF Viewer Component includin
   title = 'viewer2Angular';
   
   // constructs the http client request
-  constructor(private http:HttpClient){}
+  constructor(private http:HttpClient, public dialog: MatDialog ){}
 
   pdfSrc='https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf'   //url of the pdf
   rotation = 0; // the angle of rotation, init position is 0
   zoom = 1.0; // the degree of zoom, default degree is 0
-  name = 'ngx-sharebuttons';
   showAll= true;
   page = 1;
-
-  /** 
-   * Function that allows the user to view a local file using the viewer
-   * Will not be here in the final version
-  */
-  openLocalFile() {
-    jQuery('#file').trigger('click');
+  keystroke = ["1", "2"];
+  totalPages = 0;
+  
+  afterLoadComplete(pdf): void {
+    this.totalPages = pdf.numPages;
   }
 
   /**
-   * Render PDF preview on selecting file
-   * Tied with openLocalFile, will not be in final version
+   * @description Opens the share box (used when share button is clicked)
    */
-  onFileSelected() {
-    const $pdf: any = document.querySelector('#file');
-
-    if (typeof FileReader !== 'undefined') {
-      const reader = new FileReader();
-
-      reader.onload = (e: any) => {
-        this.pdfSrc = e.target.result;
-      };
-
-      reader.readAsArrayBuffer($pdf.files[0]);
-    }
+  openModal() {
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {
+    id: 1,
+    title: 'Share'
+    };
+    const dialogRef = this.dialog.open(MyDialogComponent, dialogConfig);
+    dialogRef.disableClose = false;
   }
 
   /**
@@ -65,36 +62,26 @@ export class AppComponent { //App Component is the PDF Viewer Component includin
     this.zoom += amount;
   }
 
-  /**
-   * openst he share box when share button is clicked in the tool bar
-   */
-  shareBox(){
-    var box = document.getElementById("share");
-    box.style.visibility = "visible";
-    var nLink= window.location.href;
-    var cLink = document.getElementById("sharelink") as HTMLInputElement;
-    cLink.value = nLink;
-  }
-
-  /**
-   * Closes the share box when x button is clicked
-   */
-  closeShare(){
-    var box = document.getElementById("share");
-    box.style.visibility = "hidden";
-  }
-
 
   /**
    * This is the funtion the turns off keystrokes
-   * - Currently turns off the whole keyboard, but I think I can simlipfy to certain keystrokes if needed.
+   * Currently only turns off Ctrl + p, Ctrl + C, and Ctrl + S
    * @param event This key that is input by the keyboard registers as a keyboard event
    */
   @HostListener('document:keydown', ['$event'])
   handleKeyboardEvent(event: KeyboardEvent) {
-  console.log(event);
-   event.returnValue = false;
-   event.preventDefault();
+    console.log(event);
+    this.keystroke[0] = this.keystroke[1];
+    this.keystroke[1] = event.key;
+    if (this.keystroke[0] == "Control" && this.keystroke[1] == "p"){
+      event.preventDefault();
+    }
+    if (this.keystroke[0] == "Control" && this.keystroke[1] == "c"){
+      event.preventDefault();
+    }
+    if (this.keystroke[0] == "Control" && this.keystroke[1] == "s"){
+      event.preventDefault();
+    }
   }
 
   /**
@@ -105,12 +92,16 @@ export class AppComponent { //App Component is the PDF Viewer Component includin
     event.preventDefault();
   }
 
+  /**
+   * In single page view, this changes the pages, inputing a negative
+   * number will decrement the page
+   * @param number this is how many pages you would like to increase the current page count by
+   */
   incrementPage(number) {
     this.page += number;
   }
 /*
  this button converts the PDF file to Base 64 encoding
-
 */
 fileToBase64 = (filename, filepath) => {
   return new Promise(resolve => {
@@ -127,7 +118,6 @@ fileToBase64 = (filename, filepath) => {
 }
 
 //this button sends a PDF to Offline Storage
-
 onOfflineClick(){
   this.fileToBase64("compressed.tracemonkey-pldi-09.pdf", "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf").then(result => {
   console.log(result);
@@ -135,14 +125,9 @@ onOfflineClick(){
   GlobalConstants.pdfname="compressed.tracemonkey-pldi-09.pdf";
 });
 }
+}
 
-/*
-//opens offline mode where you can see all the files you've uploaded
-offlineMode(){
-  $scope.redirect = function(){
-    $location.url('/page.html');
-  }
-}
-*/
-}
+
+
+
  

@@ -4,28 +4,38 @@
 
   <!-- Rotate Left -->
   <span
-  [inlineSVG]="'/assets/icon/baseline-rotate_left-24px.svg'"
+  class="fa fa-undo fa-lg" 
+  aria-hidden="true"
   (click)="rotate(-90)"
   title="Rotate Left"
+  style="margin-left: 5px;"
   ></span>
+
+  <br>
   <!-- Rotate Right-->
   <span
-    [inlineSVG]="'/assets/icon/baseline-rotate_right-24px.svg'"
+    class="fa fa-undo fa-flip-horizontal fa-lg"
     (click)="rotate(90)"
     title="Rotate Right"
+    style="margin-left: 5px;"
   ></span>
 
   <!-- Zoom in -->
-  <span
-    [inlineSVG]="'/assets/icon/baseline-zoom_in-24px.svg'"
+  <span 
+    class="fa fa-search-plus fa-lg"
+    aria-hidden="true"
     (click)="incrementZoom(0.1)"
     title="Zoom In"
+    style="margin-left: 5px;"
   ></span>
+
   <!-- Zoom Out -->
   <span
-    [inlineSVG]="'/assets/icon/baseline-zoom_out-24px.svg'"
+    class="fa fa-search-minus fa-lg"
+    aria-hidden="true"
     (click)="incrementZoom(-0.1)"
     title="Zoom Out"
+    style="margin-left: 5px;"
   ></span>
 
   <!-- Toggle all pages-->
@@ -35,29 +45,20 @@
     [inlineSVG]="'/assets/icon/baseline-multi-pages-24px.svg'"
     (click)="showAll = !showAll"
     title="Toggle Show All"
+    style="margin-left: 5px;"
   ></span>
-
   <ng-container *ngIf="!showAll">
     <span
-      class="my-icon ml-auto"
-      [inlineSVG]="'/assets/icon/baseline-navigate_before-24px.svg'"
+      class="fas fa-chevron-left fa-lg"
       (click)="incrementPage(-1)"
+      style="margin-left: 5px;"
       title="Previous Page"
     ></span>
-    <div>
-      <input
-        type="number"
-        class="page-num"
-        placeholder="Page"
-        [(ngModel)]="page"
-        pattern="-?[0-9]*(\.[0-9]+)?"
-      />
-      <span *ngIf="pdf">of {{ pdf.numPages }}</span>
-    </div>
+    <input type= "text" value= {{page}} style = "width: 25px;">out of {{totalPages}}
     <span
-      class="my-icon"
-      [inlineSVG]="'/assets/icon/baseline-navigate_next-24px.svg'"
+      class="fas fa-chevron-right fa-lg"
       (click)="incrementPage(1)"
+      style="margin-left: 5px;"
       title="Next Page"
     ></span>
   </ng-container>
@@ -65,6 +66,35 @@
   <!-- Share Button -->
   <button (click)= shareBox()>Share</button>
   <button (click)= onOfflineClick()>Store Offline</button>
+  <span
+  (click)= openModal() 
+  class="fas fa-share-alt fa-inverse fa-lg"
+  style="margin-left: 5px;"
+  title="Share"
+  ></span>
+
+  <!-- Offline Database (Slash Icon over wifi icon) -->
+  <div>
+    <!-- Wifi Icon -->
+    <i (click)= onOfflineClick() 
+      title= "Add to Offline Database" 
+      style="margin-left: 5px;" 
+      class="fas fa-wifi fa-lg" 
+      aria-hidden="true">
+    </i>
+    <!-- Slash Icon -->
+    <i title= "Add to Offline Database" 
+      (click)= onOfflineClick()  
+      style="margin-left: 5px;" 
+      class="fas fa-slash fa-lg" 
+      aria-label="View offline">
+    </i>
+  </div>
+
+</div>
+
+<!-- Offline Mode -->
+<div>
   <input type=button onClick="location.href='./indexeddb/indexeddb.component.html'" value='View Offline Mode'>
 </div>
 
@@ -76,19 +106,9 @@
   [zoom] = "zoom"
   [show-all] = "showAll"
   [(page)]="page"
-  style="display: block;">
+  style="display: block; margin-top: 100px;"
+  (after-load-complete)="afterLoadComplete($event)">
   </pdf-viewer>
-</div>
- 
-<div id="share">
-  <button id="share-close" (click)=closeShare() style="float:right;">X</button>
-  <h2>Share!</h2>
-  <input type= "text" value=error id="sharelink">
-  <share-button [theme]="'material-dark'" [button]="'copy'"></share-button>
-  <div>
-    <share-button button="email"></share-button>
-  </div>
-  <p>Disclaimer: PDF only visable by those with access to distribution statement _ because ...</p>
 </div>
 
 
