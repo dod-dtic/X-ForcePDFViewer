@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
+import { IndexeddbComponent } from  './indexeddb/indexeddb.component'
 
 
 const routes: Routes = [];

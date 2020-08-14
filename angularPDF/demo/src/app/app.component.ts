@@ -1,9 +1,9 @@
 import { Component, HostListener } from '@angular/core';
 import { HttpClient } from '@angular/common/http'; // used for pdf viewing
+import { IndexeddbComponent } from './indexeddb/indexeddb.component';
+import{ GlobalConstants } from './global-constants';
 
 declare var jQuery: any; 
-declare var b64:string;
-
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -108,7 +108,6 @@ export class AppComponent { //App Component is the PDF Viewer Component includin
   incrementPage(number) {
     this.page += number;
   }
-<<<<<<< HEAD
 /*
  this button converts the PDF file to Base 64 encoding
 
@@ -132,15 +131,18 @@ fileToBase64 = (filename, filepath) => {
 onOfflineClick(){
   this.fileToBase64("compressed.tracemonkey-pldi-09.pdf", "https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf").then(result => {
   console.log(result);
-  b64=String(result);
+  GlobalConstants.b64=String(result);
+  GlobalConstants.pdfname="compressed.tracemonkey-pldi-09.pdf";
 });
 }
 
-=======
-
-  
-
-  
->>>>>>> 408a00b1810104ee77d0204e75361bc5e1df299f
+/*
+//opens offline mode where you can see all the files you've uploaded
+offlineMode(){
+  $scope.redirect = function(){
+    $location.url('/page.html');
+  }
+}
+*/
 }
  

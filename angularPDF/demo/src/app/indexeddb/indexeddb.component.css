@@ -1,0 +1,26 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: helvetica, sans-serif;
+    background-color: gold;
+  }
+  
+  * {
+    box-sizing: border-box;
+  }
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+li {
+    padding: 20px;
+    border-bottom: solid 1px #DDD;
+  }
+  
+  button {
+    float: right;
+  }
+  
