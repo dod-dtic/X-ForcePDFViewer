@@ -34,7 +34,7 @@ import { from } from 'rxjs';
     MatButtonModule,
     BrowserAnimationsModule,
     NgxIndexedDBModule,
-    NgxIndexedDBService
+    NgxIndexedDBService,
   ],
   entryComponents: [
     MyDialogComponent

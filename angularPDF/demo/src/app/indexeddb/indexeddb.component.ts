@@ -64,7 +64,6 @@ export class IndexeddbComponent{
         newli.appendChild(b2);
 
            
-        return '<li> <button id="'+ id +'">delete</button>'+ GlobalConstants.pdfname+'</li>';
       },
       error => {  
         console.log(error);
@@ -76,29 +75,12 @@ export class IndexeddbComponent{
   }     
 
 
-  
 
-});
+};
 
  
 
     
 
-  
 
-
-
-
-  
-
-  ngOnInit(): void {
-  }
-
-}
-
-@NgModule({
-  imports: [NgxIndexedDBModule.forRoot(dbConfig)
-
-  ]
-})
 
