@@ -27,10 +27,12 @@ objectStoresMeta: [{
 export class IndexeddbComponent{
 
   constructor(private dbService: NgxIndexedDBService){
+    
     var id=Date.now();
     this.dbService.add('PDF', { name: GlobalConstants.pdfname, base64: GlobalConstants.b64, id }).then(
       () => {
         // Do something after the value was added
+        htmlelent: HTMLElement;
         return '<li> <button id="'+ id +'">delete</button>'+ GlobalConstants.pdfname+'</li>';
       },
       error => {  
