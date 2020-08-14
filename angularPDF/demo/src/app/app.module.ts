@@ -32,7 +32,9 @@ import { from } from 'rxjs';
     InlineSVGModule.forRoot(),
     MatDialogModule,
     MatButtonModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    NgxIndexedDBModule,
+    NgxIndexedDBService
   ],
   entryComponents: [
     MyDialogComponent

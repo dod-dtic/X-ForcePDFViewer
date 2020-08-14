@@ -18,7 +18,6 @@ export class AppComponent { //App Component is the PDF Viewer Component includin
   
   // constructs the http client request
   constructor(private http:HttpClient, public dialog: MatDialog ){}
-
   pdfSrc='https://raw.githubusercontent.com/mozilla/pdf.js/ba2edeae/web/compressed.tracemonkey-pldi-09.pdf'   //url of the pdf
   rotation = 0; // the angle of rotation, init position is 0
   zoom = 1.0; // the degree of zoom, default degree is 0
